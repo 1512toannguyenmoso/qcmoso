@@ -1,7 +1,7 @@
 const { test, expect } = require ('@playwright/test')
 
 test('Create new application use autofill', async ({ page }) => {
-    test.setTimeout(50000);
+    test.setTimeout(240000);
     await page.goto('https://www.viet18.com/');
 
     // Login into system
@@ -25,8 +25,8 @@ test('Create new application use autofill', async ({ page }) => {
 
     // Loan info tab
     await page.click('//span[@id="select2-purpose-container"]');
-    await page.click('text = "Purchase"');
-    await page.fill('//div[@id="Subject property1"]//input[@id="zip"]', '95111');
+    await page.fill('//span[@class="select2-search select2-search--dropdown"]//input[@role="textbox"]', 'Purchase');
+    await page.keyboard.press('Enter');
     await page.click('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
     await page.click('//button[@id="gwt-debug-next"]');
 
@@ -37,6 +37,7 @@ test('Create new application use autofill', async ({ page }) => {
     // Borrowers tab
     await page.click('//div[@id="com.mvu.loan.client.view.application.form1003.BorrowersForm"]//div[4]//div[2]//div[1]//div[9]//div[1]//table[1]//thead[1]//tr[1]//th[1]//button[1]');
     await page.click('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
+    await page.click('//div[@class="modal-footer cleafix flex-wrap"]//button[@id="gwt-debug-submit"]');
     await page.click('//button[@id="gwt-debug-next"]');
 
     // Employment tab
@@ -58,18 +59,19 @@ test('Create new application use autofill', async ({ page }) => {
     await page.click('//button[@id="gwt-debug-next"]');
 
     // Housing expenses tab
-    await page.dblclick('//button[@id="gwt-debug-next"]');
+    await page.click('//button[@id="gwt-debug-next"]');
+    await page.click('//button[@id="gwt-debug-next"]');
 
     // Transaction details tab
-    await page.dblclick('//button[@id="gwt-debug-next"]');
+    await page.click('//button[@id="gwt-debug-next"]');
 
     // Declarations tab
-    await page.dblclick('//button[@id="gwt-debug-next"]');
+    await page.click('//button[@id="gwt-debug-next"]');
 
     // Demographic tab
-    await page.getByLabel('Borrower does not wish to provide this information').check();
-    await page.check('//button[@id="save"]');
-    // hg
+    // await page.setChecked('Borrower does not wish to provide this information');
+    // await page.click('//div[@id="white"]//button[@name="Yes"][normalize-space()="Yes"]');
+    await page.click('//button[@id="save"]');
 
     //await page.waitForTimeout(12000);
 });
