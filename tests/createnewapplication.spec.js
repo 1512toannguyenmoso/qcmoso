@@ -69,6 +69,7 @@ test('Create new application use autofill', async ({ page }) => {
     // Demographic tab
     await page.getByLabel('Borrower does not wish to provide this information').check();
     await page.check('//button[@id="save"]');
+    // hg
 
     //await page.waitForTimeout(12000);
 });
