@@ -28,5 +28,7 @@ test.describe.serial('List test cases execute', () => {
         await page.click('//span[normalize-space()="Users"]');
         await page.click('//a[normalize-space()="Associates"]');
         await page.waitForTimeout(15000);
+
+        //test
     });
 })
