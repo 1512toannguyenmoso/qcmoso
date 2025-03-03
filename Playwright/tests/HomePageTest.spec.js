@@ -16,4 +16,7 @@ test ('HOme Page', async ({page}) => {
     await expect (page).toHaveURL('https://demoblaze.com/index.html');
     await page.close();
 
+    await page.goto('http://example.com');
+    expect(await page.title()).toBe('Example Domain');
+
 })
