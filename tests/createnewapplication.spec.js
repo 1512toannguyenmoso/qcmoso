@@ -3,15 +3,19 @@ const { test, expect } = require ('@playwright/test')
 test('Create new application use autofill', async ({ page }) => {
     test.setTimeout(240000);
     await page.goto('https://www.viet18.com/');
+    await page.waitForLoadState('load');
 
     // Login into system
     await page.click('//button[normalize-space()="Sign in"]');
-    await page.fill('//input[@id="email"]', 'suspension1@viet18.com');
-    await page.fill('//input[@id="password"]', 'zxczxc');
+    await page.waitForLoadState('load');
+    await page.type('//input[@id="email"]', 'suspension1@viet18.com', { delay: 100 });
+    await page.type('//input[@id="password"]', 'zxczxc', { delay: 100 });
     await page.click('//button[@id="gwt-debug-submit"]');
+    await page.waitForLoadState('load');
 
     // Navigate to Prospects page
     await page.click('//li[@class="d-none d-md-block"]//a[@href="##prospects"][normalize-space()="Prospects"]');
+    await page.waitForLoadState('load');
 
     // Add application
     await page.click('//button[@id="gwt-debug-add"]');
