@@ -1,4 +1,5 @@
 const{expect} = require('@playwright/test');
+
 async function loginFunction(page, url, email, password) {
     await page.goto(url);
     await page.fill('//input[@id="email"]', email);
@@ -27,4 +28,5 @@ function generateRandomEmail(){
     const domain = domainNames[Math.floor(Math.random() * domainNames.length)];
     return `${username}@${domain}`;
 };
+
 module.exports = {loginFunction, loginFailed, generateRandomEmail};
