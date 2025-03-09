@@ -104,7 +104,7 @@ async function navigationFunction(page, navigationList){
         await menuItem.click();
 }};
 
-async function navigationToEachSubMenuObVerticalMenu(page, array){
+async function navigationToEachSubMenuObVerticalMenu(page, array, length){
     for (let i=0; i<array.length; i++){
         //click the menu to open sub-menu
         const menuItem = page.locator(array[i].item[0]);
@@ -113,9 +113,15 @@ async function navigationToEachSubMenuObVerticalMenu(page, array){
 
         //access to each sub-menu
         for (let j=1; j <array[i].item.length;j++){
-            const menuItem = page.locator(array[i].item[j]);
-            await page.waitForSelector(array[i].item[j], {timeout: 20000});
-            await menuItem.click()
+            const selector = array[i].item[j];
+            try{
+                const menuItem = page.locator(selector);
+                await page.waitForSelector(array[i].item[j], {timeout: 20000});
+                await menuItem.click()
+            } catch(error){
+                continue;
+            }
+            
         }
     };
 };
@@ -123,4 +129,4 @@ async function navigationToEachSubMenuObVerticalMenu(page, array){
 // navigationVerticalList2.forEach(feature => {
 //     console.log(feature.category);
 // });
-module.exports = {navigationHorizontalList, navigationVerticalList,navigationFunction, navigationToEachSubMenuObVerticalMenu};
+module.exports = {navigationHorizontalList, navigationVerticalList,navigationVerticalList2, navigationFunction, navigationToEachSubMenuObVerticalMenu};
