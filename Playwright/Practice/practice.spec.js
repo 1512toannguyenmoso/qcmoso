@@ -59,9 +59,14 @@ test.describe.parallel('All User authentication',()=>{
     });
 });
 });
-test('Navigation to page', async({page})=>{
-  await myFunctions1.loginFunction(page, 'https://www.viet18.com/login', 'userisadminwithfullpermission@viet18.com', '123456');
-  for (let i =0; i< myFunctions2.navigationList.length;i++){
-    await page.click(myFunctions2.navigationList[i]);
-  }
+//Navigation
+test.describe.parallel('Navigation',() =>{
+  test('Navigation to horizontal menu', async({page})=>{
+    await myFunctions1.loginFunction(page, 'https://www.viet18.com/login', 'userisadminwithfullpermission@viet18.com', '123456');
+    await myFunctions2.navigationFunction(page, myFunctions2.navigationHorizontalList);
+  });
+  test('Navigation to vertical menu', async({page}) => {
+    await myFunctions1.loginFunction(page, 'https://www.viet18.com/login', 'userisadminwithfullpermission@viet18.com', '123456');
+    await myFunctions2.navigationFunction(page, myFunctions2.navigationVerticalList);
+  });
 });
