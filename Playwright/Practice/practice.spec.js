@@ -69,4 +69,9 @@ test.describe.parallel('Navigation',() =>{
     await myFunctions1.loginFunction(page, 'https://www.viet18.com/login', 'userisadminwithfullpermission@viet18.com', '123456');
     await myFunctions2.navigationFunction(page, myFunctions2.navigationVerticalList);
   });
+
+  test('Navigation to vertical sub-menu', async({page})=> {
+    await myFunctions1.loginFunction(page, 'https://www.viet18.com/login', 'userisadminwithfullpermission@viet18.com', '123456');
+    await myFunctions2.navigationToEachSubMenuObVerticalMenu(page, myFunctions2.navigationVerticalList2);
+  });
 });

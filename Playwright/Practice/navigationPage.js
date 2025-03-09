@@ -27,10 +27,11 @@ const navigationVerticalList=[
     "//span[normalize-space()='My Training Academy']"
 ];
 
-const navigationVerticalMainFeature =[
+const navigationVerticalList2 =[
     {
         category :"Main Features",
         item :[
+        "//span[normalize-space()='Main features']",
         "a[normalize-space()='GO LIVE']",
         "//a[normalize-space()='Rate alerts']",
         "//li[@class='has-sub expand']//li[3]//a[1]",
@@ -39,12 +40,60 @@ const navigationVerticalMainFeature =[
     {
         category : "Marketing Features",
         item :[
+        "//span[normalize-space()='Marketing features']",
         "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='Facebook Ads']",
         "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='Google reviews']",
         "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='Marketing materials']",
         "//a[normalize-space()='Email drip campaigns']",
         "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='Mailing lists']",
         "//a[normalize-space()='Lead funnel & Widgets']"]
+    },
+    {
+        category : "Miscellaneous features",
+        item: [
+            "//span[normalize-space()='Miscellaneous features']",
+            "//a[normalize-space()='Teams / Mentorships / Production Partners']",
+            "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='Loan officer referral bonus']",
+            "//a[normalize-space()='My Training Academy']",
+            "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='My To-dos']",
+            "//a[normalize-space()='Event - Open House']",
+            "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='Opt-out list']",
+            "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='Conversation history']"
+        ]
+    },
+    {
+        category: "Transactions",
+        item: [
+            "//span[normalize-space()='Transactions']",
+            "//a[normalize-space()='RE transactions']"
+        ]
+    },
+    {
+        category: "Rate Alerts",
+        item:[
+            "//span[normalize-space()='Rate alerts']"
+        ]
+    },
+    {
+        category: "Users",
+        item: [
+            "//a[@id='gwt-debug-users']",
+            "//a[normalize-space()='Company directory']",
+            "//a[normalize-space()='User accounts']",
+            "//a[normalize-space()='Borrowers']",
+            "//a[normalize-space()='Lenders']",
+            "//a[normalize-space()='Associates']",
+            "//a[normalize-space()='Branches & teams']",
+            "//a[normalize-space()='Assembly lines']",
+            "//li[@class='has-sub expand']//a[@role='tab'][normalize-space()='My referral realtors']",
+            "//a[normalize-space()='Realtors']",
+            "//a[normalize-space()='Closing agents']",
+            "//a[normalize-space()='3rd-party processing companies']",
+            "//a[normalize-space()='Vendors']",
+            "//a[normalize-space()='Outside users']",
+            "//a[normalize-space()='Loan Officers']",
+            "//a[normalize-space()='Employers']"
+        ]
     }
 ];
 
@@ -55,4 +104,23 @@ async function navigationFunction(page, navigationList){
         await menuItem.click();
 }};
 
-module.exports = {navigationHorizontalList, navigationVerticalList,navigationFunction};
+async function navigationToEachSubMenuObVerticalMenu(page, array){
+    for (let i=0; i<array.length; i++){
+        //click the menu to open sub-menu
+        const menuItem = page.locator(array[i].item[0]);
+        await page.waitForSelector(array[i].item[0], {timeout: 20000});
+        await menuItem.click();
+
+        //access to each sub-menu
+        for (let j=1; j <array[i].item.length;j++){
+            const menuItem = page.locator(array[i].item[j]);
+            await page.waitForSelector(array[i].item[j], {timeout: 20000});
+            await menuItem.click()
+        }
+    };
+};
+// console.log(navigationVerticalList2[0].item[0]);
+// navigationVerticalList2.forEach(feature => {
+//     console.log(feature.category);
+// });
+module.exports = {navigationHorizontalList, navigationVerticalList,navigationFunction, navigationToEachSubMenuObVerticalMenu};
