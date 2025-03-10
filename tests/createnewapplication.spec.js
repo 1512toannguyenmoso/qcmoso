@@ -1,4 +1,5 @@
-const { test, expect } = require ('@playwright/test')
+import { test, expect } from '@playwright/test';
+import myfunctions, { TickTheCheckBox } from './function.js';
 
 test('Create new application use autofill', async ({ page }) => {
     test.setTimeout(240000);
@@ -71,12 +72,13 @@ test('Create new application use autofill', async ({ page }) => {
 
     // Declarations tab
     await page.click('//button[@id="gwt-debug-next"]');
+    
 
     // Demographic tab
-    // await page.setChecked('Borrower does not wish to provide this information');
-    // await page.click('//div[@id="white"]//button[@name="Yes"][normalize-space()="Yes"]');
-    await page.click('//button[@id="save"]');
-
+    let list = await myfunctions.getCheckboxesFromDiv(await myfunctions.getHtml(page), "com.mvu.loan.client.view.application.DemographicInfoForm");
+    console.log(list)
+    console.log(myfunctions.tickTheCheckBox(list))
+ 
     //await page.waitForTimeout(12000);
 });
 

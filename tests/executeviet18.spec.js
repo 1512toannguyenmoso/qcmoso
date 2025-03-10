@@ -1,4 +1,4 @@
-const { test, expect } = require ('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 // danh sach test case: neu serial thi khi run test se chay lan luot tung test case
 test.describe.serial('List test cases execute', () => {
