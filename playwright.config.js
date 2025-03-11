@@ -39,7 +39,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
+    // @ts-ignore
+    // use: {
+    //   timeout: 60000, // Tăng timeout lên 60 giây
+    // }
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
