@@ -29,4 +29,19 @@ function generateRandomEmail(){
     return `${username}@${domain}`;
 };
 
-module.exports = {loginFunction, loginFailed, generateRandomEmail};
+function generateRandomAddress() {
+    const streetNames = [
+        "McBain Ave", "Shady Dale Ave", "Cameo Dr", "Campbell Ave", 
+        "Denver Dr", "Rosalia Ave", "Cielo Vista Way", "Brookdale Dr", "Poplar Ave"
+    ];
+
+    // Tạo số địa chỉ từ 1 đến 4 chữ số
+    const addressNumber = Math.floor(Math.random() * 9000) + 1; 
+
+    // Chọn ngẫu nhiên một tên đường
+    const streetName = streetNames[Math.floor(Math.random() * streetNames.length)];
+
+    return `${addressNumber} ${streetName}`;
+};
+
+module.exports = {loginFunction, loginFailed, generateRandomEmail, generateRandomAddress};

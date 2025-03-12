@@ -1,3 +1,6 @@
+const { generateCaliforniaZipCode } = require("./function");
+const {JSDOM} = require("jsdom");
+
 const navigationHorizontalList =[
 "//li[@class='d-none d-md-block']//a[@href='##company_dashboard'][normalize-space()='Dashboard']",
 "//li[@class='d-none d-md-block']//a[@href='##pricing'][normalize-space()='Pricing Engine']",
@@ -99,15 +102,17 @@ const navigationVerticalList2 =[
 
 async function navigationFunction(page, navigationList){
     for (let i = 0; i< navigationList.length; i++){
-        const menuItem = page.locator(navigationList[i]);
+        const selector = navigationList[i];
+        const menuItem = page.locator(selector);
         await page.waitForSelector(navigationList[i], { timeout: 20000 });
         await menuItem.click();
 }};
-
-async function navigationToEachSubMenuObVerticalMenu(page, array, length){
+//Access to all sub-menu in login view.
+async function navigationToEachSubMenuOnbVerticalMenu(page, array, length){
     for (let i=0; i<array.length; i++){
-        //click the menu to open sub-menu
-        const menuItem = page.locator(array[i].item[0]);
+        //click the main menu to open sub-menu
+        const selector = array[i].item[0];
+        const menuItem = page.locator(selector);
         await page.waitForSelector(array[i].item[0], {timeout: 20000});
         await menuItem.click();
 
@@ -121,12 +126,40 @@ async function navigationToEachSubMenuObVerticalMenu(page, array, length){
             } catch(error){
                 continue;
             }
-            
         }
     };
 };
-// console.log(navigationVerticalList2[0].item[0]);
-// navigationVerticalList2.forEach(feature => {
-//     console.log(feature.category);
-// });
-module.exports = {navigationHorizontalList, navigationVerticalList,navigationVerticalList2, navigationFunction, navigationToEachSubMenuObVerticalMenu};
+
+//Obtain the HTML and find the check box in HTML.
+async function getCheckboxInPage(page, divId){
+    const divLocator = page.locator(`[id="${divId}"]`);
+    // Chờ tối đa 5 giây để phần tử xuất hiện
+    await divLocator.waitFor({ state: 'visible', timeout: 15000 });
+    const HTMLString = await divLocator.evaluate(el => el.innerHTML);
+    const dom = new JSDOM(HTMLString);
+    const doc = dom.window.document;
+
+    function isHidden(element) {
+        let parent = element.parentElement;
+        while (parent) {
+            const style = parent.getAttribute('style') || "";
+            if (style.includes("display: none")) {
+                return true; // Found a hidden parent
+            }
+            parent = parent.parentElement;
+        }
+        return false; // No hidden parent found
+    }
+
+    const checkboxIds = Array.from(doc.querySelectorAll('input[type="checkbox"]'))
+        .filter(checkbox => !isHidden(checkbox)) // Check visibility through ancestors
+        .map(checkbox => `//div[@id='${checkbox.id}']`);
+    return checkboxIds;
+};
+async function checkAllBoxInPage(page, checkBoxList) {
+    for (let i = 0; i < checkBoxList.length; i++) {
+        await page.locator(checkBoxList[i]).waitFor({ state: 'visible', timeout: 5000 });
+        await page.locator(checkBoxList[i]).check();
+    }
+}
+module.exports = {navigationHorizontalList, navigationVerticalList,navigationVerticalList2, navigationFunction, navigationToEachSubMenuOnbVerticalMenu,getCheckboxInPage,checkAllBoxInPage};
