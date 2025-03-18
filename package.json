@@ -1,14 +1,23 @@
 {
   "name": "playwrightvscode",
   "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {},
+  "main": "playwright.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1512toannguyenmoso/qcmoso.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "devDependencies": {
-    "@playwright/test": "^1.50.1",
-    "@types/node": "^22.13.5"
-  }
+  "bugs": {
+    "url": "https://github.com/1512toannguyenmoso/qcmoso/issues"
+  },
+  "homepage": "https://github.com/1512toannguyenmoso/qcmoso#readme",
+  "description": ""
 }
