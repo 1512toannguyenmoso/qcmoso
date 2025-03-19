@@ -14,10 +14,10 @@ export class LoginPage{
     this.resetPassword_locator = this.page.locator("//button[@id='gwt-debug-submit']");
     this.error_nonexisting_email_locator = this.page.locator("//p[@id='error']");
     this.forgotPassword_locator = this.page.locator("//a[normalize-space()='Forgot password?']");
-    this.signInbutton_locator = this.page.locator("//button[normalize-space()='Sign in']");
+    this.signInbutton_locator = this.page.locator('button:has-text("Sign in")');
   }
   async login(username, password){
-    await this.page.signInbutton_locator.click();
+    await this.signInbutton_locator.click();
     await this.usernameInput_locator.fill(username);
     await this.passwordInput_locator.fill(password);
     await this.loginButton_locator.click();
@@ -104,18 +104,4 @@ export class ApplicationPage{
     await this.passwordRegister_Locator.fill(password);
     await this.createNewAccount_Locator.click();
   };
-};
-
-async function loginFunction(page, url, email, password) {
-    await page.goto(url);
-    await page.fill('//input[@id="email"]', email);
-    await page.fill('//input[@id="password"]', password);
-    await page.click('//button[@id="gwt-debug-submit"]');
-};
-async function loginFailed(page, url, email, password, errorMessage) {
-    await page.goto(url);
-    await page.fill('//input[@id="email"]', email);
-    await page.fill('//input[@id="password"]', password);
-    await page.click('//button[@id="gwt-debug-submit"]');
-    await expect(page.locator('//p[@id="error"]')).toHaveText("There is no account associated set this email address.");
 };

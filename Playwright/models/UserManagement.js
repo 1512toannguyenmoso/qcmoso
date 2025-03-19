@@ -2,13 +2,13 @@ import {LoginPage,ApplicationPage} from '../Practice/BasePage.js';
 class BaseUser{
     constructor(page){
         this.page = page;
+        this.signinPage = new LoginPage(page);
+        this.ApplicationPage = new ApplicationPage(page);
     }
 };
 export class Borrower extends BaseUser{
     constructor(page){
         super(page);
-        this.signinPage = new LoginPage(page);
-        this.ApplicationPage = new ApplicationPage(page);
     };
     async BorrowerLogin(username,password){
         await this.signinPage.login(username,password);
