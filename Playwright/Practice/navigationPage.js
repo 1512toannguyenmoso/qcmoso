@@ -1,4 +1,4 @@
-const { generateCaliforniaZipCode } = require("./function");
+const { generateCaliforniaZipCode } = require("./BasePage");
 const {JSDOM} = require("jsdom");
 
 const navigationHorizontalList =[
@@ -129,12 +129,14 @@ async function navigationToEachSubMenuOnbVerticalMenu(page, array, length){
         }
     };
 };
-
+async function waitForDivId(page, divId){
+    const divLocator = page.locator(`[id="${divId}"]`);
+    await divLocator.waitFor({ state: 'visible', timeout: 5000 })// Chờ tối đa 5 giây để phần tử xuất hiện
+};
 //Obtain the HTML and find the check box in HTML.
 async function getCheckboxInPage(page, divId){
-    const divLocator = page.locator(`[id="${divId}"]`);
-    // Chờ tối đa 5 giây để phần tử xuất hiện
-    await divLocator.waitFor({ state: 'visible', timeout: 15000 });
+    const divLocator = page.locator(`[id = "${divId}"]`);
+    await divLocator.waitFor({ state: 'visible', timeout: 5000 })
     const HTMLString = await divLocator.evaluate(el => el.innerHTML);
     const dom = new JSDOM(HTMLString);
     const doc = dom.window.document;
@@ -162,4 +164,5 @@ async function checkAllBoxInPage(page, checkBoxList) {
         await page.locator(checkBoxList[i]).check();
     }
 }
-module.exports = {navigationHorizontalList, navigationVerticalList,navigationVerticalList2, navigationFunction, navigationToEachSubMenuOnbVerticalMenu,getCheckboxInPage,checkAllBoxInPage};
+
+module.exports = {navigationHorizontalList, navigationVerticalList,navigationVerticalList2, navigationFunction, navigationToEachSubMenuOnbVerticalMenu,getCheckboxInPage,checkAllBoxInPage, waitForDivId};

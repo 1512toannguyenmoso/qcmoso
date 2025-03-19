@@ -1,24 +1,55 @@
 import {test, expect} from '@playwright/test';
-import myFunctions1 from './function.js';
+import myFunctions1 from './BasePage.js';
 import myFunctions2, { checkAllBoxInPage } from './navigationPage.js';
+import {Borrower, Admin} from '../models/UserManagement.js';
+import data from '../utils/datatest.js';
+import helpers_function from '../utils/helpers.js'
 
+test.describe.parallel('User create application',() =>{
+  let borrower;
+  test.beforeEach(async({page}) =>{
+    borrower = new Borrower(page);
+    await page.goto("https://www.viet18.com/");
+  });
+  test('Borrower create a purchase loan',async ({page})=>{
+    await borrower.BorrowerCreatePurchaseLoan(helpers_function.generateRandomEmail(),"123456");
+  });
+  test('Borrower create a preapproval loan',async ({page})=>{
+    await borrower.BorrowerCreatePreApprovalLoan(helpers_function.generateRandomEmail(),"123456");
+  });
+  test('Borrower create a refinance rate/term loan',async ({page})=>{
+    await borrower.BorrowerCreateRefinanceRateTermLoan(helpers_function.generateRandomEmail(),"123456");
+  });
+  test('Borrower create a refinance cash-out loan',async ({page})=>{
+    await borrower.BorrowerCreateRefinanceCashOutLoan(helpers_function.generateRandomEmail(),"123456");
+  });
+});
 test.describe.parallel('All User authentication',()=>{
-  
   //User authentication, User is admin.
   test.describe('User Authentication Tests, User is admin',() =>{
-    test('Login Home Page Successfully',async ({page})=>{
-      await myFunctions1.loginFunction(page, 'https://www.viet18.com/login', 'userisadminwithfullpermission@viet18.com', '123456');
+    let loginPage;
+    test.beforeEach('Go to',async({page}) =>{
+      loginPage = new myFunctions1.LoginPage(page);
     });
-    test('Login Home Page Failed', async({page})=>{
-      await myFunctions1.loginFailed(page, 'https://www.viet18.com/login', 'userisadminwithfullpermission@viet18.com', '123455', 'Login failed. Invalid email or password.');
+    test('Login Home Page Successfully',async ({page})=>{
+      await loginPage.login('userisadminwithfullpermission@viet18.com', '123456');
+    });
+    test('Login Home Page Failed, Incorrect Password', async({page})=>{
+      await loginPage.login('userisadminwithfullpermission@viet18.com', '123457');
+      await loginPage.checkErrorMessage();
+    });
+    test('Login Home Page Failed, Missing character in password', async({page})=>{
+
+      await loginPage.login('userisadminwithfullpermission@viet18.com', '12345');
+      await loginPage.checkErrorMessage();
     });
     test('Test reset password of non-existing account', async({page})=>{
-      await page.goto('https://www.viet18.com/reset_password');
-      await page.fill('//input[@id="email"]','noexistingborrower@tesst.com');
-      await page.click('//button[@id="gwt-debug-submit"]');
-      await expect(page.locator('//p[@id="error"]')).toHaveText("There is no account associated set this email address.");
-  })
+      await loginPage.resetPassword("nonexistinguserresetpassword@test.com");
+      await loginPage.checkErrorMessage();
+    })
   });
+
+
   
   //user authentication, user is borrower.
   test.describe('User Authentication Tests, User is borrower',() => {
@@ -26,13 +57,14 @@ test.describe.parallel('All User authentication',()=>{
       await page.goto('https://www.viet18.com/apply');
       await page.click("//p[normalize-space()='I want to BUY A HOME']");
       await page.click("//p[normalize-space()='Seller accepted my offer']");
-      await page.fill("//input[@id='email']",myFunctions1.generateRandomEmail());
+      await page.fill("//input[@id='email']",helpers_function.generateRandomEmail);
       await page.click("//button[@id='gwt-debug-next']");
       await page.fill("//input[@id='password']",'123456');
       await page.click("//button[3]");
     })
     test('Login Home Page Successfully',async ({page})=>{
-      await myFunctions1.loginFunction(page, 'https://www.viet18.com/login', 'userisborrower@testing.com', '123456');
+      const admin = new Admin(page);
+      await admin.AdminLogin('userisborrower@testing.com', '123456');
     });
     test('Login Home Page Failed', async ({page}) => {
       await myFunctions1.loginFailed(page, 'https://www.viet18.com/login', 'userisborrower@testing.com', '123455', "Login failed. Invalid email or password.");
@@ -87,68 +119,9 @@ test('Create new application use autofill', async ({ page }) => {
   await page.click('//button[@id="gwt-debug-add"]');
   await page.click('//button[@id="input-new-prospect"]');
   await page.click('//button[@id="skip-and-fill-application-manually"]');
-  
-
-  // Use autofill proceed application
-  // General tab
-  await page.click('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
-  await page.click('//button[@id="gwt-debug-next"]');
-  
-
-  // Loan info tab
-  await page.click('//span[@id="select2-purpose-container"]');
-  await page.fill('//span[@class="select2-search select2-search--dropdown"]//input[@role="textbox"]', 'Purchase');
-  await page.keyboard.press('Enter');
-  await page.fill("//input[@id='street']", myFunctions1.generateRandomAddress());
-  await page.keyboard.press('Enter');
-  await page.fill("//input[@id='zip']", '95132');
-  await page.keyboard.press('Enter');
-  await page.click('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
-  await page.click('//button[@id="gwt-debug-next"]');
-  // Contact info tab
-  await page.click('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Borrowers tab
-  await page.click('//div[@id="com.mvu.loan.client.view.application.form1003.BorrowersForm"]//div[4]//div[2]//div[1]//div[9]//div[1]//table[1]//thead[1]//tr[1]//th[1]//button[1]');
-  await page.click('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
-  await page.click('//div[@class="modal-footer cleafix flex-wrap"]//button[@id="gwt-debug-submit"]');
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Employment tab
-  await page.click('//div[@id="employments"]//table[@class="table table-sm"]//thead//tr//th//button[@id="i-classmaterial-icons-unset-iconsaddcirclei-add"]');
-  await page.dblclick('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
-  await page.click('//div[@class="modal-footer cleafix flex-wrap"]//button[@id="gwt-debug-submit"]')
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Assets tab
-  await page.click('//div[@id="assets"]//table[@class="table table-sm"]//thead//tr//th//button[@id="i-classmaterial-icons-unset-iconsaddcirclei-add"]');
-  await page.click('//a[@id="gwt-debug-__floating_fill-form"]//i[@class="material-icons unset-icons"][normalize-space()="check"]');
-  await page.click('//div[@class="modal-footer cleafix flex-wrap"]//button[@id="gwt-debug-submit"]');
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // REO tab
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Liabilities tab
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Housing expenses tab
-  await page.click('//button[@id="gwt-debug-next"]');
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Transaction details tab
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Declarations tab
-  await page.click('//button[@id="gwt-debug-next"]');
-
-  // Demographic tab
-  const HTMLDiv = "com.mvu.loan.client.view.application.DemographicInfoForm";
-  const checkBoxList = myFunctions2.getCheckboxInPage(page,HTMLDiv);
-  console.log(checkBoxList);
-  // checkAllBoxInPage(checkBoxList);
-  // await page.click("//div[@class='mt-3']//button[3]");
-  // await page.click("//div[@class='clearfix']//button[2]");
-
 });
+
+
+
+
+
