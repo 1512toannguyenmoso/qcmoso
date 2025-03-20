@@ -17,12 +17,15 @@
     "url": "https://github.com/1512toannguyenmoso/qcmoso/issues"
   },
   "homepage": "https://github.com/1512toannguyenmoso/qcmoso#readme",
-  "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.50.1",
+    "@playwright/test": "^1.51.0",
     "@types/node": "^22.13.5"
   },
   "dependencies": {
     "fs": "^0.0.1-security"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "description": ""
 }
