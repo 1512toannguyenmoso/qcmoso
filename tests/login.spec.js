@@ -14,8 +14,13 @@ import { Admin, Borrower } from '../pages/userType.js';
 //     });
 // });
 
-test('Borrower register', async ({ page }) => {
+// test('Borrower register', async ({ page }) => {
+//     const borrower = new Borrower(page);
+//     await borrower.registerBorrowerAccount1('suspen544561@viet18.com', 'zxczxc');
+// });
+
+test('Login borrower account and create purchase loan manually', async ({ page }) => {
     const borrower = new Borrower(page);
-    await borrower.registerBorrower1('suspen54545@viet18.com', 'zxczxc');
+    await borrower.loginBorrowerAndCreatePurchaseLoan('suspen544561@viet18.com', 'zxczxc');
 });
 

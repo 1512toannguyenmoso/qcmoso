@@ -1,10 +1,11 @@
-import { LoginPage, RegisterBorrower } from './pageManagement';
+import { LoginPage, RegisterBorrowerAndFillApplication } from './pageManagement';
 
 class BaseUser{
     constructor(page){
         this.page = page;
         this.loginPage = new LoginPage(page);
-        this.registerBorrower = new RegisterBorrower(page);
+        this.registerBorrower = new RegisterBorrowerAndFillApplication(page);
+        this.loginBorrowerAndCreatePurchase = new RegisterBorrowerAndFillApplication(page);
     }
 }
 export class Admin extends BaseUser{
@@ -22,7 +23,10 @@ export class Borrower extends BaseUser{
     async borrowerLogin(email, password){
         await this.loginPage.login(email, password);
     }
-    async registerBorrower1(email, password){
-        await this.registerBorrower.registerAndCreateLoanPurchase(email, password);
+    async registerBorrowerAccount1(email, password){
+        await this.registerBorrower.registerBorowerAccount(email, password);
+    }
+    async loginBorrowerAndCreatePurchaseLoan(email, password){
+        await this.loginBorrowerAndCreatePurchase.loginBorrowerAndCreatePurchaseLoanManual(email, password);
     }
 }
