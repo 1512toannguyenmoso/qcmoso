@@ -53,7 +53,7 @@ test('log in', async ({page}) => {
     await page.fill('input[palceholser="Email or phone"]','chi.tran@moso.com');
 
     await page.getByRole('link',{name: "Next"}).click();
-}) */
+}) 
 
 /*const {test, except} = require ('@playwright/test');
 
@@ -63,5 +63,4 @@ test ('Home Page', async ({page}) => {
 
     await page.getByRole('link',{name: "Rate quote"}).click();
 
-})
-
+})*/
