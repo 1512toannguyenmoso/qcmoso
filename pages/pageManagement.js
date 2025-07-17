@@ -1,13 +1,35 @@
+export class QuoteWidgetCompany {
+    constructor(page) {
+        this.page = page;
+        this.quoteWidgetCompanyQm = this.page.locator("(//a[normalize-space()='FULL DOC'])[1]");
+        this.quoteWidgetCompanyNonQm = this.page.locator("(//a[normalize-space()='NO-INCOME DOC'])[1]");
+        this.quoteWidgetCompanyGetQuoteButton = this.page.locator("(//button[normalize-space()='Get Quote'])[1]");
+        this.preTaxIncomeDropdown = this.page.locator("//span[@class='select2 select2-container select2-container--default select2-container--above select2-container--focus']//span[@role='combobox']");
+        this.valuePreTaxIncome = this.page.locator("'<= $96,150 (<=50% of AMI)'");
+        this.showRateButton = this.page.locator("(//button[normalize-space()='Show Rates'])[1]");
+    }
+}
+
+export class QuoteWidgetLoanOfficerPage {
+    constructor(page) {
+        this.page = page;
+        this.quoteWidgetLoanOfficerQm = this.page.locator("(//a[normalize-space()='FULL DOC'])[1]");
+        this.quoteWidgetLoanOfficerNonQm = this.page.locator("(//a[normalize-space()='NO-INCOME DOC'])[1]");
+        this.quoteWidgetLoanOfficerGetQuoteButton = this.page.locator("(//button[normalize-space()='Get Quote'])[1]");
+    }
+}
+
 export class LoginPage {
     constructor(page) {
         this.page = page;
-        this.emailInput = this.page.locator("//input[@id='email']"); 
-        this.passwordInput = this.page.locator("//input[@id='password']"); 
+        this.emailInput = this.page.locator("//input[@id='email']");
+        this.passwordInput = this.page.locator("//input[@id='password']");
         this.loginButton = this.page.locator("//button[@id='gwt-debug-submit']");
     }
 }
+
 export class RegisterBorrower {
-    constructor(page){
+    constructor(page) {
         this.page = page;
         this.emailInput = this.page.locator("//input[@id='email']");
         this.passwordInput = this.page.locator("//input[@id='password']");
@@ -23,8 +45,9 @@ export class RegisterBorrower {
         this.autoFillButton = this.page.locator("//a[@id='gwt-debug-__floating_fill-form']");
     }
 }
+
 export class FillApplicationManually {
-    constructor(page){
+    constructor(page) {
         this.page = page;
         this.loanPurposeRefinance = this.page.locator("//button[@id='refinance']//div");
         this.refinanceRT = this.page.locator("//button[@id='i-want-lower-ratespayments']//div");
