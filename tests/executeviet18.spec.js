@@ -7,7 +7,7 @@ test.describe.serial('List test cases execute', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('https://www.viet18.com');
     });
-    
+
     // login that bai
     test('Go to the page and login unsuccessful', async ({ page }) => {
         await page.click('//button[normalize-space()="Sign in"]');
@@ -29,4 +29,4 @@ test.describe.serial('List test cases execute', () => {
 
         //test
     });
-})
+});
